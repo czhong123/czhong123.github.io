@@ -1,0 +1,28 @@
+# 修改MySQL的默认数据存储引擎
+
+
+
+因为MySQL默认的是MyISAM数据引擎，不支持事务也不支持外键，所以需要用到Innodb引擎，于是决定将mysql的默认引擎设置为innodb。
+1 . 查看MySQL存储引擎是用的哪个？登录MySQL数据库，在mysql>提示符下搞入show engines;命令。
++------------+---------+----------------------------------------------------------------+
+| Engine     | Support | Comment                                                        |
++------------+---------+----------------------------------------------------------------+
+| MyISAM     | DEFAULT | Default engine as of MySQL 3.23 with great performance         |
+| MEMORY     | YES     | Hash based, stored in memory, useful for temporary tables      |
+| InnoDB     | YES     | Supports transactions, row-level locking, and foreign keys     |
+| BerkeleyDB | YES     | Supports transactions and page-level locking                   |
+| BLACKHOLE  | NO      | /dev/null storage engine (anything you write to it disappears) |
+| EXAMPLE    | NO      | Example storage engine                                         |
+| ARCHIVE    | NO      | Archive storage engine                                         |
+| CSV        | NO      | CSV storage engine                                             |
+| ndbcluster | NO      | Clustered, fault-tolerant, memory-based tables                 |
+| FEDERATED  | NO      | Federated MySQL storage engine                                 |
+| MRG_MYISAM | YES     | Collection of identical MyISAM tables                          |
+| ISAM       | NO      | Obsolete storage engine                                        |
++------------+---------+----------------------------------------------------------------+
+
+说明目前默认的数据引擎是MyISAM，并且也支持InnoDB引擎。
+
+\2. 设置InnoDB为默认引擎：在配置文件my.cnf中的 [mysqld] 下面加入default-storage-engine=INNODB 一句，保存。
+
+\3. 重启mysql服务器：mysqladmin -u root -p shutdown或者service mysqld restart 登录mysql数据库，在mysql>提示符下搞入show engines;命令。如果出现 InnoDB |DEFAULT，则表示我们 设置InnoDB为默认引擎成功。
